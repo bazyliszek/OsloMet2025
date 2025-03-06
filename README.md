@@ -5,17 +5,18 @@ Welcome to the **OsloMet2025** repository! This repository contains exercises an
 ## 🚀 Exercises for today on Colab - you need to have google account 
 You can access the Colab repository with exercises here:  
 [▶ Google Colab - OsloMet2025 Exercises](https://colab.research.google.com/drive/1Mpyixpcu75rwM17OolBFIogP9kBqpw-T#scrollTo=CTvu5SmoXvOn)
+Remember to make a copy of this repository as this one is only "read modus"
 
 
 ## 💻 Run on Binder (Alternative to Colab, no account nessesary but maybe more problematic)
 If you prefer **not to use Google Colab**, you can run the exercises on **Binder** instead:
 
 1. Visit **[MyBinder](https://mybinder.org/)**  
-2. Enter the GitHub repository URL:  "https://github.com/bazyliszek/OsloMet2025"
-3. Enter file name Biopython_Basics.ipynb
+2. Enter the GitHub repository URL:  https://github.com/bazyliszek/OsloMet2025
+3. Enter file name: Biopython_Basics.ipynb
 
 
-## 🚀 You can of course use python on your computer but you will need to fix instaltion for yourself 
+## 🚀 You can also use python on your computer but you will need to fix instaltion yourself (not recommended) 
 You can access the Colab repository with exercises here:  
 [▶ Python](biopython_basics.py)
 
