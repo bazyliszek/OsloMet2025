@@ -8,7 +8,7 @@ You can access the Colab repository with exercises here:
 Remember to make a copy of this repository as this one is only "read modus"
 
 
-## 💻 Run on Binder (Alternative to Colab, no account nessesary but maybe more problematic)
+## 💻 Run on Binder (Alternative to Colab, no account nessesary but maybe more problematic as resources are limited so this is not recomended solution for parts 2-5)
 If you prefer **not to use Google Colab**, you can run the exercises on **Binder** instead:
 
 1. Visit **[MyBinder](https://mybinder.org/)**  
