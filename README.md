@@ -12,7 +12,14 @@ If you prefer **not to use Google Colab**, you can run the exercises on **Binder
 
 1. Visit **[MyBinder](https://mybinder.org/)**  
 2. Enter the GitHub repository URL:  "https://github.com/bazyliszek/OsloMet2025"
-3. Enter file name 
+3. Enter file name Biopython_Basics.ipynb
+
+
+## 🚀 You can of course use python on your computer but you will need to fix instaltion for yourself 
+You can access the Colab repository with exercises here:  
+[▶ Python](biopython_basics.py)
+
+
 
 ## 📚 Further Reading
 For additional learning materials, check out these resources:  
