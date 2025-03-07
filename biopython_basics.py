@@ -16,7 +16,7 @@ Original file is located at
 
 """# ✨ Task1.1.  What is reverse complement of the DNA sequence 'ATCGGTAATGATAGATGA'? ✨"""
 
-#Task1.1. You should do this exercise with your neibour
+#Task1.1. Work together!
 
 import sys
 from Bio.Seq import Seq
@@ -28,7 +28,7 @@ reverse_complement = sequence.reverse_complement()
 # Print the reverse complement
 print(reverse_complement)
 
-"""# ✨ Task1.2 Example of transcription (DNA to RNA). ✨
+"""# ✨ Task1.2 Example of transcription ✨
 * What is the RNA transcript of the DNA sequence 'TTCCGATC'? ✨
 """
 
@@ -57,7 +57,7 @@ protein_sequence = dna_sequence.translate()
 # Print the protein sequence
 print('This is your protein sequence', protein_sequence)
 
-"""# ✨ Remember to place the file "my_sequnce.fasta" from this repository https://github.com/bazyliszek/OsloMet2025 to /content/sample_data/ ✨"""
+"""# ✨ Remember to place the file "my_sequnce.fasta" into your sample_data folder from this repository https://github.com/bazyliszek/OsloMet2025 to /content/sample_data/ ✨"""
 
 from Bio import SeqIO
 
@@ -119,7 +119,7 @@ alignments = pairwise2.align.globalxx(seq1, seq2)
 for alignment in alignments:
     print(pairwise2.format_alignment(*alignment))
 
-"""✨ ✨ ✨ ✨ ✨ ✨ ✨ **#PART 2 DATABASES** ✨ ✨ ✨ ✨
+"""# ✨ ✨ ✨  **PART 2 DATABASES** ✨ ✨ ✨ ✨
 
 # ✨ Task2.1.  Access the NCBI database at https://www.ncbi.nlm.nih.gov/  ✨
 * What is the length of the sequence NC_000023.11? ✨
@@ -280,7 +280,7 @@ pdb_id = "1CRN"  # Replace with the PDB ID of the structure you want to retrieve
 pdb_filename = fetch_pdb_structure(pdb_id)  # Call the function with the PDB ID to retrieve the structure
 print(f"PDB structure {pdb_id} downloaded as {pdb_filename}")  # Print the filename of the downloaded PDB structure
 
-#Inspect the file that was created pdb1crn.ent
+#Inspect the file that was created pdb1crn.ent Find out which software you should use for this?
 
 """# ✨ Task 2.7: Querying the Database for the TEX101 Gene   ✨
 * ✨ What are the other known synonyms for this gene?  ✨
@@ -397,7 +397,7 @@ for sequence in sequences:
     print("ID:", sequence.id)
     print("Length:", len(sequence))
 
-"""# ✨ PART 3 - Single cell analysis ✨"""
+"""# ✨ ✨ ✨ ✨ ✨ ✨ **PART 3 - RNAseq analysis** ✨"""
 
 !pip install pydeseq2
 #!pip install --upgrade numpy
@@ -405,7 +405,8 @@ for sequence in sequences:
 #!pip install --upgrade scikit-learn==1.3.0 scanpy==1.9.3
 
 """# ✨ Task3.1. What is the dimation of the raw imported count object?  ✨
-* What is ENSG00000271254? Remember to have correct file ✨
+* Remember to upload the correct file in right direction ✨
+* What is ENSG00000271254?
 * The file you need you can find it here # https://github.com/bazyliszek/OsloMet2025  ✨
 """
 
@@ -421,7 +422,7 @@ print(counts)
 counts = counts.set_index('Geneid')
 print(counts)
 
-"""# ✨ Task3.2. What is the dimation of the the count object with count more than 0? ✨"""
+"""# ✨ Task3.2. What is the dimation of the the count object with count more than 0?"""
 
 counts = counts[counts.sum(axis=1) > 0]
 print(counts)
@@ -572,8 +573,11 @@ print(dds_sigs)
 grapher = pd.DataFrame(dds_sigs.layers['log1p'].T, index=dds_sigs.var_names, columns=dds_sigs.obs_names)
 sns.clustermap(grapher, z_score=0, cmap = 'RdYlBu_r')
 
-"""# ✨ Part V - Single cell RNA ✨
-* Based on https://scanpy.readthedocs.io/en/stable/tutorials/basics/clustering.html
+"""# Which genes distinguish these 2 condition?
+
+# ✨✨✨  Part IV - Single cell RNA ✨✨
+
+The data used in this basic preprocessing and clustering tutorial was collected from bone marrow mononuclear cells of healthy human donors and was part of openproblem’s NeurIPS 2021 benchmarking dataset [Luecken et al., 2021]. The samples used in this tutorial were measured using the 10X Multiome Gene Expression and Chromatin Accessability kit. credits scanpy.readthedocs.io/en/stable/tutorials/basics/clustering.htm
 """
 
 # Install Core scverse libraries
@@ -589,6 +593,8 @@ import anndata as ad
 import pooch
 
 sc.settings.set_figure_params(dpi=50, facecolor="white")
+
+"""✨ We are reading in the count matrix into an AnnData object, which holds many slots for annotations and different representations of the data."""
 
 EXAMPLE_DATA = pooch.create(
     path=pooch.os_cache("scverse_tutorials"),
@@ -613,6 +619,12 @@ adata.obs_names_make_unique()
 print(adata.obs["sample"].value_counts())
 adata
 
+"""✨ The data contains ~8,000 cells per sample and 36,601 measured genes. We’ll now investigate these with a basic preprocessing and clustering workflow.
+
+# ✨ Quality Control
+* The scanpy function calculate_qc_metrics() calculates common quality control (QC) metrics, which are largely based on calculateQCMetrics from scater [McCarthy et al., 2017]. One can pass specific gene population to calculate_qc_metrics() in order to calculate proportions of counts for these populations. Mitochondrial, ribosomal and hemoglobin genes are defined by distinct prefixes as listed below.
+"""
+
 # mitochondrial genes, "MT-" for human, "Mt-" for mouse
 adata.var["mt"] = adata.var_names.str.startswith("MT-")
 # ribosomal genes
@@ -624,6 +636,13 @@ sc.pp.calculate_qc_metrics(
     adata, qc_vars=["mt", "ribo", "hb"], inplace=True, log1p=True
 )
 
+"""✨ One can now inspect violin plots of some of the computed QC metrics:
+* the number of genes expressed in the count matrix
+* the total counts per cell
+* the percentage of counts in mitochondrial genes
+
+"""
+
 sc.pl.violin(
     adata,
     ["n_genes_by_counts", "total_counts", "pct_counts_mt"],
@@ -631,14 +650,32 @@ sc.pl.violin(
     multi_panel=True,
 )
 
+"""✨ Additionally, it is useful to consider QC metrics jointly by inspecting a scatter plot colored by pct_counts_mt."""
+
 sc.pl.scatter(adata, "total_counts", "n_genes_by_counts", color="pct_counts_mt")
+
+"""✨ Based on the QC metric plots, one could now remove cells that have too many mitochondrial genes expressed or too many total counts by setting manual or automatic thresholds. However, sometimes what appears to be poor QC metrics can be driven by real biology so we suggest starting with a very permissive filtering strategy and revisiting it at a later point.
+* We therefore now only filter cells with less than 100 genes expressed and genes that are detected in less than 3 cells.
+
+* Additionally, it is important to note that for datasets with multiple batches, quality control should be performed for each sample individually as quality control thresholds can very substantially between batches.
+"""
 
 sc.pp.filter_cells(adata, min_genes=100)
 sc.pp.filter_genes(adata, min_cells=3)
 
+"""# ✨ Doublet detection
+As a next step, we run a doublet detection algorithm. Identifying doublets is crucial as they can lead to misclassifications or distortions in downstream analysis steps. Scanpy contains the doublet detection method Scrublet [Wolock et al., 2019]. Scrublet predicts cell doublets using a nearest-neighbor classifier of observed transcriptomes and simulated doublets. scanpy.pp.scrublet() adds doublet_score and predicted_doublet to .obs. One can now either filter directly on predicted_doublet or use the doublet_score later during clustering to filter clusters with high doublet scores.
+"""
+
 sc.pp.scrublet(adata, batch_key="sample")
 
-# Saving count data
+"""✨ We can remove doublets by either filtering out the cells called as doublets, or waiting until we’ve done a clustering pass and filtering out any clusters with high doublet scores.
+
+# ✨ Normalization
+✨ The next preprocessing step is normalization. A common approach is count depth scaling with subsequent log plus one (log1p) transformation. Count depth scaling normalizes the data to a “size factor” such as the median count depth in the dataset, ten thousand (CP10k) or one million (CPM, counts per million). The size factor for count depth scaling can be controlled via target_sum in pp.normalize_total. We are applying median count depth normalization with log1p transformation (AKA log1PF).
+"""
+
+5# Saving count data
 adata.layers["counts"] = adata.X.copy()
 
 # Normalizing to median total counts
@@ -646,13 +683,25 @@ sc.pp.normalize_total(adata)
 # Logarithmize the data
 sc.pp.log1p(adata)
 
+"""# ✨ Feature selection
+✨ As a next step, we want to reduce the dimensionality of the dataset and only include the most informative genes. This step is commonly known as feature selection. The scanpy function pp.highly_variable_genes annotates highly variable genes by reproducing the implementations of Seurat [Satija et al., 2015], Cell Ranger [Zheng et al., 2017], and Seurat v3 [Stuart et al., 2019] depending on the chosen flavor.
+"""
+
 sc.pp.highly_variable_genes(adata, n_top_genes=2000, batch_key="sample")
 
 sc.pl.highly_variable_genes(adata)
 
+"""# ✨ Dimensionality Reduction
+✨ Reduce the dimensionality of the data by running principal component analysis (PCA), which reveals the main axes of variation and denoises the data.
+"""
+
 sc.tl.pca(adata)
 
+""" ✨ Let us inspect the contribution of single PCs to the total variance in the data. This gives us information about how many PCs we should consider in order to compute the neighborhood relations of cells, e.g. used in the clustering function leiden() or tsne(). In our experience, there does not seem to be signifigant downside to overestimating the numer of principal components."""
+
 sc.pl.pca_variance_ratio(adata, n_pcs=50, log=True)
+
+"""✨ You can also plot the principal components to see if there are any potentially undesired features (e.g. batch, QC metrics) driving signifigant variation in this dataset. In this case, there isn’t anything too alarming, but it’s a good idea to explore this."""
 
 sc.pl.pca(
     adata,
@@ -662,9 +711,18 @@ sc.pl.pca(
     size=2,
 )
 
+"""#✨ Nearest neighbor graph constuction and visualization
+* Let us compute the neighborhood graph of cells using the PCA representation of the data matrix.
+
+"""
+
 sc.pp.neighbors(adata)
 
+"""✨ This graph can then be embedded in two dimensions for visualiztion with UMAP (McInnes et al., 2018):"""
+
 sc.tl.umap(adata)
+
+"""✨ We can now visualize the UMAP according to the sample. ✨"""
 
 sc.pl.umap(
     adata,
@@ -673,12 +731,24 @@ sc.pl.umap(
     size=2,
 )
 
+"""✨ Even though the data considered in this tutorial includes two different samples, we only observe a minor batch effect and we can continue with clustering and annotation of our data.
+
+✨ If you inspect batch effects in your UMAP it can be beneficial to integrate across samples and perform batch correction/integration.
+
+# ✨  Clustering
+✨  As with Seurat and many other frameworks, we recommend the Leiden graph-clustering method (community detection based on optimizing modularity) [Traag et al., 2019]. Note that Leiden clustering directly clusters the neighborhood graph of cells, which we already computed in the previous section.
+"""
+
 !pip install igraph
 
 # Using the igraph implementation and a fixed number of iterations can be significantly faster, especially for larger datasets
 sc.tl.leiden(adata, flavor="igraph", n_iterations=2)
 
 sc.pl.umap(adata, color=["leiden"])
+
+"""# ✨  Re-assess quality control and cell filtering
+* As indicated before, we will now re-assess our filtering strategy by visualizing different QC metrics using UMAP. ✨
+"""
 
 sc.pl.umap(
     adata,
@@ -695,11 +765,22 @@ sc.pl.umap(
     ncols=2,
 )
 
+"""# ✨  Manual cell-type annotation ✨
+
+Cell type annotation is laborous and repetitive task, one which typically requires multiple rounds of subclustering and re-annotation. It is difficult to show the entirety of the process in this tutorial, but we aim to show how the tools scanpy provides assist in this process.
+
+We have now reached a point where we have obtained a set of cells with decent quality, and we can proceed to their annotation to known cell types. Typically, this is done using genes that are exclusively expressed by a given cell type, or in other words these genes are the marker genes of the cell types, and are thus used to distinguish the heterogeneous groups of cells in our data. Previous efforts have collected and curated various marker genes into available resources, such as CellMarker, TF-Marker, and PanglaoDB. The cellxgene gene expression tool can also be quite useful to see which cell types a gene has been expressed in across many existing datasets.
+
+Commonly and classically, cell type annotation uses those marker genes subsequent to the grouping of the cells into clusters. So, let’s generate a set of clustering solutions which we can then use to annotate our cell types. Here, we will use the Leiden clustering algorithm which will extract cell communities from our nearest neighbours graph.
+"""
+
 for res in [0.02, 0.5, 2.0]:
     sc.tl.leiden(
         adata, key_added=f"leiden_res_{res:4.2f}", resolution=res, flavor="igraph"
     )
 
+"""✨  Notably, the number of clusters that we define is largely arbitrary, and so is the resolution parameter that we use to control for it. As such, the number of clusters is ultimately bound to the stable and biologically-meaningful groups that we can ultimately distringuish, typically done by experts in the corresponding field or by using expert-curated prior knowledge in the form of markers."""
+
 sc.pl.umap(
     adata,
     color=["leiden_res_0.02", "leiden_res_0.50", "leiden_res_2.00"],
@@ -711,6 +792,12 @@ sc.pl.umap(
     color=["leiden_res_0.02", "leiden_res_0.50", "leiden_res_2.00"],
     legend_loc="on data",
 )
+
+"""✨  Though UMAPs should not be over-interpreted, here we can already see that in the highest resolution our data is over-clustered, while the lowest resolution is likely grouping cells which belong to distinct cell identities.
+
+# ✨  Marker gene set
+ ✨ Let’s define a set of marker genes for the main cell types that we expect to see in this dataset. These were adapted from Single Cell Best Practices annotation chapter, for a more detailed overview and best practices in cell type annotation, we refer the user to it.
+"""
 
 marker_genes = {
     "CD14+ Mono": ["FCN1", "CD14"],
@@ -747,6 +834,8 @@ marker_genes = {
 
 sc.pl.dotplot(adata, marker_genes, groupby="leiden_res_0.02", standard_scale="var")
 
+"""✨  There are fairly clear patterns of expression for our markers show here, which we can use to label our coarsest clustering with broad lineages."""
+
 adata.obs["cell_type_lvl1"] = adata.obs["leiden_res_0.02"].map(
     {
         "0": "Lymphocytes",
@@ -758,8 +847,19 @@ adata.obs["cell_type_lvl1"] = adata.obs["leiden_res_0.02"].map(
 
 sc.pl.dotplot(adata, marker_genes, groupby="leiden_res_0.50", standard_scale="var")
 
+"""✨  This seems like a resolution that suitable to distinguish most of the different cell types in our data. As such, let’s try to annotate those by manually using the dotplot above, together with the UMAP of our clusters. Ideally, one would also look specifically into each cluster, and attempt to subcluster those if required.
+
+# ✨  Differentially-expressed Genes as Markers
+✨  Furthermore, one can also calculate marker genes per cluster and then look up whether we can link those marker genes to any known biology, such as cell types and/or states. This is typically done using simple statistical tests, such as Wilcoxon and t-test, for each cluster vs the rest. ✨
+"""
+
 # Obtain cluster-specific differentially expressed genes
 sc.tl.rank_genes_groups(adata, groupby="leiden_res_0.50", method="wilcoxon")
+
+"""✨  We can then use these genes to figure out what cell types we’re looking at. For example, Cluster 7 is expressing NKG7 and GNLY, suggesting these are NK cells. ✨
+
+✨  To create your own plots, or use a more automated approach, the differentially expressed genes can be extracted in a convenient format with scanpy.get.rank_genes_groups_df() ✨
+"""
 
 sc.pl.rank_genes_groups_dotplot(
     adata, groupby="leiden_res_0.50", standard_scale="var", n_genes=5
@@ -775,3 +875,5 @@ sc.pl.umap(
     frameon=False,
     ncols=3,
 )
+
+"""✨  You may have noticed that the p-values found here are extremely low. This is due to the statistical test being performed considering each cell as an independent sample. For a more conservative approach you may want to consider “pseudo-bulking” your data by sample (e.g. sc.get.aggregate(adata, by=["sample", "cell_type"], func="sum", layer="counts")) and using a more powerful differential expression tool, like pydeseq2. ✨"""
