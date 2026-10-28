@@ -1,4 +1,4 @@
-# 📂 OsloMet2025 Repository - Exercises & Resources
+# 📂 OsloMet2026 Repository - Exercises & Resources
 
 Welcome to the **OsloMet2025** repository! This repository contains exercises and useful resources to support your learning.
 
