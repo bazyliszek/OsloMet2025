@@ -1,6 +1,6 @@
 # 📂 OsloMet2026 Repository - Exercises & Resources
 
-Welcome to the **OsloMet2025** repository! This repository contains exercises and useful resources to support your learning.
+Welcome to the **OsloMet2026** repository! This repository contains exercises and useful resources to support your learning.
 
 ## 🚀 Exercises for today on Colab - you need to have google account 
 You can access the Colab repository with exercises here:  
